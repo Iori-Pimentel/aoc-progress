@@ -12,21 +12,22 @@ def solve(keypad, sx, sy):
 
         for char in instruction:
             dx, dy = {
-                "U":(0, 1),
-                "D":(0, -1),
+                "U":(0, -1),
+                "D":(0, 1),
                 "L":(-1, 0),
                 "R":(1, 0),
             }[char]
 
             cx, cy = cx + dx, cy + dy
             try:
+                if cx < 0 or cy < 0:
+                    cx, cy = cx - dx, cy - dy
                 if keypad[cx][cy] == " ":
                     cx, cy = cx - dx, cy - dy
             except IndexError:
                 cx, cy = cx - dx, cy - dy
 
-        yield keypad[cx][cy]
-
+        yield keypad[cy][cx]
 
 keypad = [
     ["1", "2", "3"],
@@ -42,4 +43,4 @@ keypad = [
     [" ", "A", "B", "C", " "],
     [" ", " ", "D", " ", " "],
 ]
-print("".join(solve(keypad, 2, 0)))
+print("".join(solve(keypad, 0, 2)))

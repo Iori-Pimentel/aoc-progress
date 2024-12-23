@@ -9,6 +9,7 @@ orientation = 0
 cx, cy = 0, 0
 first_vist_twice = None
 visited = set()
+
 for instruction in instructions:
     direction, count = instruction[0], int(instruction[1:])
     orientation = orientation + { "R":1, "L":-1 }[direction]
@@ -28,5 +29,6 @@ for instruction in instructions:
 
         visited.add((cx, cy))
 
-print(cx + cy)
-print(sum(first_vist_twice))
+distance = abs(cx) + abs(cy)
+print(distance)
+print(sum(abs(distance) for distance in first_vist_twice))
