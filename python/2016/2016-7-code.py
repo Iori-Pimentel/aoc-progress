@@ -7,7 +7,8 @@ hypernets = [" ".join(address[1::2]) for address in addresses_split]
 
 def is_abba(line):
     return any(a+b == d+c and a != b
-        for a, b, c, d in zip(line, line[1:], line[2:], line[3:]))
+        for a, b, c, d in zip(line, line[1:], line[2:], line[3:])
+    )
 
 def is_ababab(supernet, hypernet):
     return any(a == c and a != b and b+a+b in hypernet

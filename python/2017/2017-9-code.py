@@ -8,8 +8,7 @@ cleaned = re.sub(r"<.*?>|,", "", no_negation)
 nesting, score = 0, 0
 for char in cleaned:
     nesting += {"{": 1, "}": -1}[char]
-    if char == "{":
-        score += nesting
+    score += {"{": nesting, "}": 0}[char]
 
 print(score, garbage)
 

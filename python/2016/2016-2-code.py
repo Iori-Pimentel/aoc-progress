@@ -17,8 +17,8 @@ directions = { "U": 1j, "D": -1j, "R": 1, "L": -1 }
 
 def map_coordinates(array_2d):
     coordinates = {}
-    for y in range(len(array_2d)):
-        for x in range(len(array_2d[y])):
+    for y, _ in enumerate(array_2d):
+        for x, _ in enumerate(array_2d[y]):
             if array_2d[y][x] == " ":
                 continue
 

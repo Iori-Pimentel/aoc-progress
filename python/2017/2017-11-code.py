@@ -11,11 +11,10 @@ directions = {
 }
 a, b, c = 0, 0, 0
 alltime_distance = 0
+distance = lambda a, b, c: sum(map(abs, [a, b, c])) // 2
 for move in data.split(","):
     da, db, dc = directions[move]
     a, b, c = a+da, b+db, c+dc
-    print(a, b, c)
-    alltime_distance = max(alltime_distance, sum(map(abs, [a, b, c])) // 2)
+    alltime_distance = max(alltime_distance, distance(a, b, c))
 
-distance = sum(map(abs, [a, b, c])) // 2
-print(distance, alltime_distance)
+print(distance(a, b, c), alltime_distance)
