@@ -3,12 +3,15 @@ import re
 data = open("inputs/2015-16.txt").read().splitlines()
 
 def parse(line):
-    line = re.findall(r"\b[a-z0-9]+", line)
-    return line
+    return (
+        re.search("[0-9]+", line).group(),
+        [
+            (property, int(value))
+            for property, value in re.findall(r"([a-z]+): ([0-9]+)", line)
+        ]
+    )
 
 source = [parse(line) for line in data]
-source = {name: dict(zip(items[0::2], items[1::2])) for name, *items in source}
-
 ticker = {
     "children": 3,
     "cats": 7,
@@ -22,7 +25,17 @@ ticker = {
     "perfumes": 1,
 }
 
-max_match = max(sum(ticker[key] == value for key, value in items.items())
-    for name, items in source.items()
+def find(func):
+    return next(id
+        for id, properties in source
+        if all(func(*property) for property in properties)
+    )
+
+find_part1 = find(lambda key, value: ticker[key] == value)
+find_part2 = find(
+    lambda key, value:
+        ticker[key] < value if key in ["cats", "trees"] else
+        ticker[key] > value if key in ["pomeranians", "goldfish"] else
+        ticker[key] == value
 )
-print(max_match)
+print(find_part1, find_part2)
