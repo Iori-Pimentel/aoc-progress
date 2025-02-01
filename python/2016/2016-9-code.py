@@ -1,27 +1,24 @@
-from collections import deque
+from itertools import takewhile, islice
 import re
 data = open("inputs/2016-9.txt").read().strip()
 
-tokens = [1 if char.isupper() else 0 for char in data]
-markers = re.finditer("[x0-9]+", data)
+until = lambda iterable, end: "".join(takewhile(lambda char: char != end, iterable))
+def decompress(iterable, recursive=False):
+    unmarked = until(iterable, "(")
+    length = until(iterable, "x")
+    repeat = until(iterable, ")")
+    if not length: return len(unmarked)
 
-referenced = set()
-# TODO: clean
-for mark in markers:
-    if any(ref in range(mark.start(), mark.end()) for ref in referenced):
-        continue
-
-    length, repeat = mark.group().split("x")
-    start = mark.end()+1
     length, repeat = int(length), int(repeat)
+    marked = "".join(islice(iterable, length))
 
-    for i in range(start, start+length):
-        if tokens[i] == 0:
-            referenced.add(i)
-            tokens[i] = 1
-        tokens[i] *= repeat
+    if recursive:
+        return len(unmarked) + decompress(iter(marked), recursive) * repeat + decompress(iterable, recursive)
+    else:
+        return len(unmarked) + len(marked) * repeat + decompress(iterable)
 
-print(sum(tokens))
+print(decompress(iter(data)))
+print(decompress(iter(data), recursive=True))
 
 tokens = [1 if char.isupper() else 0 for char in data]
 markers = re.finditer("[x0-9]+", data)
