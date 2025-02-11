@@ -8,9 +8,9 @@ numbers = [
     for number in re.finditer(r"\d+", line)
 ]
 symbols = {
-    (row, number.start()): number.group()
+    (row, symbol.start()): symbol.group()
     for row, line in enumerate(data)
-    for number in re.finditer(r"[^\d.]", line)
+    for symbol in re.finditer(r"[^\d.]", line)
 }
 
 def symbol_neighbours(row, start, end):

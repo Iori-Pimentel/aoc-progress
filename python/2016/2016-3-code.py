@@ -6,7 +6,10 @@ def is_triangle(sides):
     return sides[0]+sides[1] > sides[2]
 
 horizontal = [[int(x) for x in line.split()] for line in data]
-vertical = batched(chain.from_iterable(zip(*horizontal)), 3)
+vertical = [triangle
+    for column in zip(*horizontal)
+    for triangle in batched(column, 3)
+]
 
 horizontal_count = sum(map(is_triangle, horizontal))
 vertical_count = sum(map(is_triangle, vertical))

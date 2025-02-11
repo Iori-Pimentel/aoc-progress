@@ -20,8 +20,8 @@ def track_tail_positions(size):
         for _ in range(steps):
             segments[HEAD] += direction
 
-            for ahead in range(size-1):
-                behind = ahead + 1
+            for behind in range(1, size):
+                ahead = behind - 1
                 segments[behind] = follow_ahead(segments[ahead], segments[behind])
 
             visited.add(segments[TAIL])

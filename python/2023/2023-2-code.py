@@ -2,25 +2,27 @@ import re
 from collections import Counter
 from math import prod
 from functools import reduce
-# 12 red cubes, 13 green cubes, and 14 blue
-split = [
-    (int(id_number), [
-        Counter({name: int(count) for count, name in re.findall(r"(\d+) (\w+)", a_section)})
-        for a_section in re.split(";", sections)
-    ])
+
+games = [(game_id, played)
     for line in open("inputs/2023-2.txt")
-    for id_number, sections in [re.search(r"(\d+): (.*)", line).groups()]
+    for game_id, played in [re.search(r"(\d+): (.+)", line).groups()]
+    for game_id, played in [[int(game_id), played.split(";")]]
+    for played in [[re.findall(r"(\d+) (\w+)", bags)
+        for bags in played]]
+    for played in [[Counter({color: int(count)
+        for count, color in grabbed})
+        for grabbed in played]]
 ]
 
 available = Counter({"red": 12, "green": 13, "blue": 14})
-
-valid_total = sum(id_number
-    for id_number, sections in split
-    if all(available >= a_section for a_section in sections)
+valid_total = sum(game_id
+    for game_id, played in games
+    if all(available >= grabbed for grabbed in played)
 )
 
 union = lambda counters: reduce(lambda acc, c: acc | c, counters)
-power_total = sum(prod(union(sections).values())
-    for id_number, sections in split
+power_total = sum(prod(union(played).values())
+    for _, played in games
 )
+
 print(valid_total, power_total)

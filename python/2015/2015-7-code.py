@@ -2,10 +2,10 @@ from functools import lru_cache
 from operator import and_, or_, lshift, rshift, inv
 data = open("inputs/2015-7.txt").read().splitlines()
 
-eq = " -> "
 source = {
-    line.split(eq)[1]:line.split(eq)[0].split()
+    destination: source.split()
     for line in data
+    for source, destination in [line.split(" -> ")]
 }
 operations = { "AND": and_, "OR": or_, "LSHIFT": lshift, "RSHIFT": rshift, "NOT": inv}
 

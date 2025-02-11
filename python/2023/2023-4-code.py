@@ -4,23 +4,25 @@ from functools import lru_cache
 def numbers(string):
     return {int(x) for x in re.findall(r"\d+", string)}
 
-scratchcards = [re.split(r"[:|]", line)
+scratchcards = [(numbers(card_id).pop(), wins)
     for line in open("inputs/2023-4.txt")
-]
-scratchcards = [(numbers(card_number).pop(), len(numbers(lottery) & numbers(chosen)))
-    for card_number, lottery, chosen in scratchcards
+    for card_id, lottery, chosen in [re.split(r"[:|]", line)]
+    for wins in [len(numbers(lottery) & numbers(chosen))]
 ]
 
-points = sum(1 << wins-1 if wins else 0
-    for card_number, wins in scratchcards
+points = sum(2 ** (wins-1)
+    for _, wins in scratchcards
+    if wins
 )
 
 def count(scratchcards):
-    return sum(counter(c, l) for c, l in scratchcards)
+    @lru_cache
+    def counter(card_number, lottery):
+        return 1 + sum(counter(c, l)
+            for c, l in scratchcards[card_number:card_number+lottery]
+        )
 
-@lru_cache
-def counter(card_number, lottery):
-    return 1 + sum(counter(c, l) for c, l in scratchcards[card_number:card_number+lottery])
+    return sum(counter(c, l) for c, l in scratchcards)
 
 print(points, count(scratchcards))
 

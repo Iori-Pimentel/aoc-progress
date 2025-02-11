@@ -16,16 +16,12 @@ keypad_part2 = [
 directions = { "U": 1j, "D": -1j, "R": 1, "L": -1 }
 
 def map_coordinates(array_2d):
-    coordinates = {}
-    for y, _ in enumerate(array_2d):
-        for x, _ in enumerate(array_2d[y]):
-            if array_2d[y][x] == " ":
-                continue
-
-            move = directions["D"]*y + directions["R"]*x
-            coordinates[move] = array_2d[y][x]
-
-    return coordinates
+    return {move: char
+        for row, line in enumerate(array_2d)
+        for col, char in enumerate(line)
+        for move in [directions["D"]*row + directions["R"]*col]
+        if not char.isspace()
+    }
 
 def solve(data, keypad, start):
     keypad = map_coordinates(keypad)
