@@ -23,9 +23,6 @@ print(target)
 listing = deque()
 for check in source:
     listing.append(check)
-    if sum(listing) == target and len(listing) > 1:
-        print("found")
-        break
 
     while sum(listing) > target:
         listing.popleft()

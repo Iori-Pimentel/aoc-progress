@@ -21,4 +21,3 @@ total_part2 = sum(1
     if info["pid"].isdigit() and len(info["pid"]) == 9
 )
 print(total_part1, total_part2)
-# print(source)

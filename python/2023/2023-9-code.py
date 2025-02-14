@@ -9,10 +9,6 @@ def next_sequence(sequence):
 
     return sequence[-1] + next_sequence([b - a for a, b in pairwise(sequence)])
 
-total_part1 = sum(next_sequence(sequence)
-    for sequence in sequences
-)
-total_part2 = sum(next_sequence(sequence[::-1])
-    for sequence in sequences
-)
+total_part1 = sum(map(next_sequence, sequences))
+total_part2 = sum(next_sequence(sequence[::-1]) for sequence in sequences)
 print(total_part1, total_part2)
