@@ -1,14 +1,13 @@
 data = open("inputs/2017-11.txt").readline().strip()
 
-# TODO: comprehend
-directions = {
-    'n':  (0, 1, -1),
-    'nw': (-1, 1, 0),
-    'sw': (-1, 0, 1),
-    's':  (0, -1, 1),
-    'se': (1, -1, 0),
-    'ne': (1, 0, -1),
-}
+clockwise = ["n", "ne", "se", "s", "sw", "nw"]
+
+x, y, z = -1, 0, 1
+directions = dict()
+for rotation in clockwise:
+    directions[rotation] = x, y, z
+    x, y, z = -z, -x, -y
+
 a, b, c = 0, 0, 0
 alltime_distance = 0
 distance = lambda a, b, c: sum(map(abs, [a, b, c])) // 2
