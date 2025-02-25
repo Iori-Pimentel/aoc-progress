@@ -1,29 +1,25 @@
 import re
 data = open("inputs/2024-7.txt").read().splitlines()
 
-def combinator(numbers, part2):
-    match numbers:
-        case [last]:
-            yield last
-        case [*others, last]:
-            for subtotal in combinator(others, part2):
-                yield subtotal + last
-                yield subtotal * last
-                if part2:
-                    yield int(f"{subtotal}{last}")
-        case _:
-            assert(0)
+def combinator(inputs, part):
+    *others, last = inputs
+    if not others:
+        yield last
+        return
+
+    for subtotal in combinator(others, part):
+        yield subtotal + last
+        yield subtotal * last
+        if part == 2:
+            yield int(f"{subtotal}{last}")
 
 def parse(line):
-    total, *numbers = map(int, re.findall(r"\d+", line))
-    return total, numbers
+    return map(int, re.findall(r"\d+", line))
 
-total_part1 = sum(total
-    for total, numbers in map(parse, data)
-    if any(total == combinations for combinations in combinator(numbers, False))
-)
-total_part2 = sum(total
-    for total, numbers in map(parse, data)
-    if any(total == combinations for combinations in combinator(numbers, True))
-)
-print(total_part1, total_part2)
+for part in [1, 2]:
+    total = sum(target
+        for target, *inputs in map(parse, data)
+        if target in combinator(inputs, part)
+    )
+
+    print(total)
